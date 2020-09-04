@@ -53,16 +53,18 @@ let
   extraSourcePackages = hself: hsuper: {
     servant-client-ghcjs =
       let
-        src =
+        # Fetch the entire 'haskell-servant' repository from GitHub.
+        srcRepo =
           pkgs.fetchFromGitHub {
             owner = "haskell-servant";
             repo = "servant";
             rev = "v0.16";
             sha256 = "0dyn50gidzbgyq9yvqijnysai9hwd3srqvk8f8rykh09l375xb9j";
-          }
-          # NOTE: 'servant-client-ghcjs' resides in a subdirectory of the
-          # 'haskell-servant' repository.
-          + "/servant-client-ghcjs";
+          };
+
+        # NOTE: 'servant-client-ghcjs' resides in a subdirectory of the
+        # 'haskell-servant' repository.
+        src = srcRepo + "/servant-client-ghcjs";
       in
         doJailbreak (hself.callCabal2nix "servant-client-ghcjs" src {});
   };
