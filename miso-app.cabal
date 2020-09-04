@@ -1,0 +1,25 @@
+cabal-version:       >=1.10
+name:                miso-app
+version:             0.1.0.0
+synopsis:            Miso Start Template
+-- description:
+-- bug-reports:
+license:             BSD3
+license-file:        LICENSE
+author:              Alejandro Serrano
+maintainer:          trupill@gmail.com
+-- copyright:
+category:            Language
+build-type:          Simple
+
+executable miso-app
+  if !impl(ghcjs)
+    buildable: False
+  main-is:             Main.hs
+  ghcjs-options:       -dedupe
+  build-depends:       base >=4.12 && <5,
+                       text, aeson,
+                       microlens, microlens-mtl, microlens-th,
+                       miso, servant-client-ghcjs
+  hs-source-dirs:      web
+  default-language:    Haskell2010
