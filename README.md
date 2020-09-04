@@ -17,6 +17,14 @@ nix-build
 open ./result/bin/app.jsexe/index.html
 ```
 
+## Build the project in a nix-shell
+
+```sh
+nix-shell -A env
+cabal build
+open `find dist-newstyle/ -name index.html`
+```
+
 ## Update dependencies
 
 The `default.nix` file has a couple of lines which indicate the "state of the world" for the build system:
