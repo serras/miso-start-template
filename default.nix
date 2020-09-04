@@ -67,6 +67,23 @@ let
         doJailbreak (hself.callCabal2nix "servant-client-ghcjs" src {});
   };
 
+  # Helper function to apply a list of Haskell package set overlays that will
+  # override or augment the base snapshot with additional Haskell packages from
+  # Hackage or other sources.
+  applyOverlays = snapshot: overlays: snapshot.override (
+    oldSnapshot:
+      let
+        oldOverrides = oldSnapshot.overrides or (_:_: {});
+      in
+        {
+          overrides =
+            builtins.foldl'
+              pkgs.lib.composeExtensions
+              oldOverrides
+              overlays;
+        }
+  );
+
   # Construct a complete Haskell package set by overlaying the package set
   # provided by 'hackageSnapshot' with the extensions from
   # 'extraHackagePackages' and 'extraSourcePackages'.
@@ -74,15 +91,10 @@ let
   # NOTE: The list of package set overrides is applied in-order; if there are
   # conflicting packages across two or more package sets, the last set of
   # overrides to be applied "wins".
-  haskellPackages = hackageSnapshot.override (
-    old: {
-      overrides = builtins.foldl' pkgs.lib.composeExtensions
-        (old.overrides or (_: _: {})) [
-        extraHackagePackages
-        extraSourcePackages
-      ];
-    }
-  );
+  haskellPackages = applyOverlays hackageSnapshot [
+    extraHackagePackages
+    extraSourcePackages
+  ];
 in
 
 haskellPackages.callCabal2nix "miso-app" ./. {}
