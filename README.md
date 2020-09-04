@@ -10,19 +10,14 @@ Copy the files and start hacking your Miso app!
     1. [Install Cachix](https://docs.cachix.org/installation.html#installation): `nix-env -iA cachix -f https://cachix.org/api/v1/install`
     2. Use the Miso cache: `cachix use miso-haskell`
 
-## Build the project
+## Build and run the project
 
 ```sh
 nix-build
-```
-
-## Execute the result
-
-```sh
 open ./result/bin/app.jsexe/index.html
 ```
 
-## Updating dependencies
+## Update dependencies
 
 The `default.nix` file has a couple of lines which indicate the "state of the world" for the build system:
 - The version of Miso you are going to use, usually from Git;
