@@ -14,7 +14,7 @@ Copy the files and start hacking your Miso app!
 
 ```sh
 nix-build
-open ./result/bin/app.jsexe/index.html
+open ./result/bin/miso-app.jsexe/index.html
 ```
 
 ## Build the project in a nix-shell
